@@ -1,20 +1,20 @@
 workflows:
   build-android:
     name: React Native Android Build
-    max_build_duration: 60
     environment:
-      vars:
-        PACKAGE_NAME: "com.yourappname" # <-- Change this
       node: 16
       java: 11
     scripts:
-      - name: Install Dependencies
+      - name: Install dependencies with legacy-peer-deps
         script: |
-          npm install
-          cd android
-          chmod +x gradlew
-      - name: Build APK
-        script: |
-          ./gradlew assembleRelease
+          npm install --legacy-peer-deps
+          if [ -d "android" ]; then
+            cd android
+            chmod +x gradlew
+            ./gradlew assembleRelease
+          else
+            echo "No android folder found! This may not be a React Native project."
+            exit 1
+          fi
     artifacts:
       - android/app/build/outputs/**/*.apkapk
