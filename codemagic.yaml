@@ -1,0 +1,20 @@
+workflows:
+  build-android:
+    name: React Native Android Build
+    max_build_duration: 60
+    environment:
+      vars:
+        PACKAGE_NAME: "com.yourappname" # <-- Change this
+      node: 16
+      java: 11
+    scripts:
+      - name: Install Dependencies
+        script: |
+          npm install
+          cd android
+          chmod +x gradlew
+      - name: Build APK
+        script: |
+          ./gradlew assembleRelease
+    artifacts:
+      - android/app/build/outputs/**/*.apkapk
